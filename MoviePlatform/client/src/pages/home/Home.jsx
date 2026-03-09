@@ -51,11 +51,18 @@ const Home = () => {
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            gsap.from('.gsap-hero', { opacity: 0, y: 30, duration: 1, ease: 'power3.out', delay: 0.2 });
-            gsap.from('.gsap-section', { opacity: 0, y: 20, duration: 0.8, stagger: 0.2, ease: 'power2.out', delay: 0.4 });
+            const heroTargets = gsap.utils.toArray('.gsap-hero');
+            if (heroTargets.length > 0) {
+                gsap.from(heroTargets, { opacity: 0, y: 30, duration: 1, ease: 'power3.out', delay: 0.2 });
+            }
+
+            const sectionTargets = gsap.utils.toArray('.gsap-section');
+            if (sectionTargets.length > 0) {
+                gsap.from(sectionTargets, { opacity: 0, y: 20, duration: 0.8, stagger: 0.2, ease: 'power2.out', delay: 0.4 });
+            }
         }, homeRef);
         return () => ctx.revert();
-    }, [movieStatus]);
+    }, [movieStatus, heroPool]);
 
     useEffect(() => {
         if (heroPool.length === 0) return;

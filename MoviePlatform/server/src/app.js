@@ -6,7 +6,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["moodplay-ai.vercel.app"],
+    origin: ["https://moodplay-ai.vercel.app", "http://localhost:5173", "http://localhost:3000"],
     credentials: true,
   }),
 );
