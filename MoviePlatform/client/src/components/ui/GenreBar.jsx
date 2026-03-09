@@ -8,15 +8,21 @@ const GenreBar = ({ genres, selectedId, onGenreClick, allText = "All Genres", cl
         >
             {allText}
         </button>
-        {genres.map(genre => (
-            <button
-                key={genre.id}
-                onClick={() => onGenreClick(genre.id)}
-                className={`px-6 py-2.5 rounded-full text-sm font-bold whitespace-nowrap transition-all shadow-lg backdrop-blur-xl border ${selectedId === genre.id ? 'bg-violet-600/20 text-violet-400 border-violet-500/40' : 'bg-white/5 text-textSub/60 border-glassBorder hover:bg-white/10 hover:text-textMain'}`}
-            >
-                {genre.name}
-            </button>
-        ))}
+        {genres.length === 0 ? (
+            Array(8).fill(0).map((_, i) => (
+                <div key={`skel-genre-${i}`} className="h-[42px] min-w-[100px] rounded-full skeleton-shimmer" />
+            ))
+        ) : (
+            genres.map(genre => (
+                <button
+                    key={genre.id}
+                    onClick={() => onGenreClick(genre.id)}
+                    className={`px-6 py-2.5 rounded-full text-sm font-bold whitespace-nowrap transition-all shadow-lg backdrop-blur-xl border ${selectedId === genre.id ? 'bg-violet-600/20 text-violet-400 border-violet-500/40' : 'bg-white/5 text-textSub/60 border-glassBorder hover:bg-white/10 hover:text-textMain'}`}
+                >
+                    {genre.name}
+                </button>
+            ))
+        )}
     </div>
 );
 

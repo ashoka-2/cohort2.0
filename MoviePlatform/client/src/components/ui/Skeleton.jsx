@@ -1,5 +1,9 @@
 // Skeleton components for different layouts
 
+export const HeroSkeleton = () => (
+    <div className="w-full h-[70vh] rounded-3xl skeleton-shimmer shadow-2xl shadow-black/80" />
+);
+
 // Movie / TV card skeleton (2:3 aspect poster)
 export const MovieCardSkeleton = () => (
     <div className="rounded-xl overflow-hidden skeleton-shimmer aspect-[2/3] w-full" />

@@ -28,6 +28,7 @@ const Home = () => {
     const [heroPool, setHeroPool] = useState([]);
     const [heroIndex, setHeroIndex] = useState(0);
     const [heroFade, setHeroFade] = useState(true);
+    const [heroLoading, setHeroLoading] = useState(true);
     const homeRef = useRef(null);
     const heroTimerRef = useRef(null);
 
@@ -41,23 +42,31 @@ const Home = () => {
     }, [dispatch, movieStatus]);
 
     useEffect(() => {
+        let mounted = true;
         tmdbService.getRandomHeroMovies().then(movies => {
-            setHeroPool(movies);
-            setHeroIndex(Math.floor(Math.random() * movies.length));
+            if (mounted) {
+                setHeroPool(movies);
+                setHeroIndex(Math.floor(Math.random() * movies.length));
+            }
         }).catch(() => {
-            setHeroPool(trending.slice(0, 15));
+            // failed, leave heroPool empty so fallback works
+        }).finally(() => {
+            if (mounted) setHeroLoading(false);
         });
-    }, [trending]);
+        return () => { mounted = false; };
+    }, []);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            const heroTargets = gsap.utils.toArray('.gsap-hero');
+            const heroTargets = gsap.utils.toArray('.gsap-hero:not(.animated)');
             if (heroTargets.length > 0) {
+                heroTargets.forEach(t => t.classList.add('animated'));
                 gsap.from(heroTargets, { opacity: 0, y: 30, duration: 1, ease: 'power3.out', delay: 0.2 });
             }
 
-            const sectionTargets = gsap.utils.toArray('.gsap-section');
+            const sectionTargets = gsap.utils.toArray('.gsap-section:not(.animated)');
             if (sectionTargets.length > 0) {
+                sectionTargets.forEach(t => t.classList.add('animated'));
                 gsap.from(sectionTargets, { opacity: 0, y: 20, duration: 0.8, stagger: 0.2, ease: 'power2.out', delay: 0.4 });
             }
         }, homeRef);
@@ -116,8 +125,8 @@ const Home = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, [handleScroll]);
 
-    const renderContent = (items, isInitialLoading, localStatus) => {
-        if (isInitialLoading && localStatus === 'loading') {
+    const renderContent = (items, showSkeleton) => {
+        if (showSkeleton) {
             return Array(10).fill(0).map((_, i) => <Skeleton key={i} />);
         }
         return items.map((movie) => (
@@ -126,7 +135,8 @@ const Home = () => {
     };
 
     const activeHeroPool = heroPool.length > 0 ? heroPool : trending.slice(0, 15);
-    const heroMovie = activeHeroPool[heroIndex % (activeHeroPool.length || 1)] || null;
+    const isHeroReady = !heroLoading && (heroPool.length > 0 || movieStatus === 'succeeded');
+    const heroMovie = isHeroReady ? (activeHeroPool[heroIndex % (activeHeroPool.length || 1)] || null) : null;
     const heroType = heroMovie?.media_type || (heroMovie?.first_air_date ? 'tv' : 'movie');
 
     const handleGenreClick = (genreId) => {

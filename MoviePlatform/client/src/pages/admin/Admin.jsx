@@ -180,7 +180,7 @@ const Admin = () => {
             {/* ── Tabs Content ── */}
             <div className="animate-fade-in">
                 {activeTab === 'overview' && (
-                    <OverviewTab movies={movies} users={users} />
+                    <OverviewTab movies={movies} users={users} loading={loading} />
                 )}
 
                 {activeTab === 'movies' && (
@@ -209,6 +209,7 @@ const Admin = () => {
                         onSearchChange={setSearch}
                         onBanUser={handleBanUser}
                         onDeleteUser={handleDeleteUser}
+                        loading={loading}
                     />
                 )}
             </div>

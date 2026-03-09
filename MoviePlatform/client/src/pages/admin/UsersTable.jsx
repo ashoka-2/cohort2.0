@@ -1,6 +1,6 @@
 import React from 'react';
 
-const UsersTable = ({ users, search, onSearchChange, onBanUser, onDeleteUser }) => {
+const UsersTable = ({ users, search, onSearchChange, onBanUser, onDeleteUser, loading }) => {
     return (
         <div className="space-y-6">
             {/* Toolbar */}
@@ -35,7 +35,15 @@ const UsersTable = ({ users, search, onSearchChange, onBanUser, onDeleteUser }) 
                             </tr>
                         </thead>
                         <tbody>
-                            {users.map(u => (
+                            {loading ? (
+                                Array(5).fill(0).map((_, i) => (
+                                    <tr key={i} style={{ borderBottom: '1px solid var(--glass-border)' }}>
+                                        <td colSpan="6" className="px-6 py-4">
+                                            <div className="h-10 w-full rounded-lg skeleton-shimmer" />
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : users.map(u => (
                                 <tr key={u._id} className="hover:bg-white/3 transition" style={{ borderBottom: '1px solid var(--glass-border)' }}>
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-3">
@@ -83,7 +91,7 @@ const UsersTable = ({ users, search, onSearchChange, onBanUser, onDeleteUser }) 
                                     </td>
                                 </tr>
                             ))}
-                            {users.length === 0 && (
+                            {!loading && users.length === 0 && (
                                 <tr>
                                     <td colSpan="6" className="px-6 py-12 text-center text-sm" style={{ color: 'var(--text-sub)' }}>
                                         {search ? `No users matching "${search}"` : 'No users found'}

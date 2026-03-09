@@ -45,7 +45,7 @@ const RecentlyAdded = () => {
     };
 
     const renderContent = () => {
-        if (status === 'loading' && trending.length === 0) {
+        if (trending.length === 0) {
             return Array(20).fill(0).map((_, i) => <Skeleton key={i} />);
         }
 

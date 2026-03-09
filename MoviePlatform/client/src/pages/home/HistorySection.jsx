@@ -1,7 +1,7 @@
 import React from 'react';
 
 const HistorySection = ({ historyItems, historyStatus, renderContent }) => {
-    if (historyItems.length === 0) return null;
+    if (historyItems.length === 0 && historyStatus !== 'loading') return null;
 
     return (
         <section className="gsap-section glass-panel p-6">
@@ -11,12 +11,13 @@ const HistorySection = ({ historyItems, historyStatus, renderContent }) => {
                 </h2>
             </div>
             <div className="flex overflow-x-auto gap-6 pb-4 hide-scrollbar hover:hide-scrollbar">
-                {renderContent(historyItems.slice(0, 10), historyStatus === 'loading', historyStatus).map((Card, i) => (
-                    <div key={Card.props.movie.id || Card.props.movie._id} className="min-w-[150px] md:min-w-[200px] flex-shrink-0 neumorph-inset p-2 rounded-2xl">
+                {renderContent(historyItems.slice(0, 10), historyStatus === 'loading' || historyItems.length === 0).map((Card, i) => (
+                    <div key={Card.props?.movie?.id || Card.props?.movie?._id || `skeleton-${i}`} className="min-w-[150px] md:min-w-[200px] flex-shrink-0 neumorph-inset p-2 rounded-2xl">
                         {Card}
                     </div>
                 ))}
             </div>
+
         </section>
     );
 };

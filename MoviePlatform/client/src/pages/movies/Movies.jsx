@@ -81,7 +81,8 @@ const Movies = () => {
     };
 
     const renderContent = () => {
-        if (status === 'loading' && items.length === 0) {
+        const isLoading = selectedGenreId ? !moviesByGenre[selectedGenreId] : popularMovies.length === 0;
+        if (isLoading) {
             return Array(20).fill(0).map((_, i) => <Skeleton key={i} />);
         }
         return items.map((movie) => (

@@ -1,8 +1,6 @@
 import GenreBar from '../../components/ui/GenreBar';
 
 const GenreFilter = ({ genres, selectedGenreId, onGenreClick, onClearGenre }) => {
-    if (genres.length === 0) return null;
-
     return (
         <section className="gsap-section glass-panel p-6">
             <div className="flex items-center justify-between mb-4">

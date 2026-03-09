@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { HeroSkeleton } from '../../components/ui/Skeleton';
 
 const HeroCarousel = ({ heroMovie, heroFade, heroIndex, heroType, activeHeroPool, goToHero }) => {
-    if (!heroMovie) return null;
+    if (!heroMovie) return <HeroSkeleton />;
 
     return (
         <div className="gsap-hero relative w-full h-[70vh] rounded-3xl overflow-hidden shadow-2xl shadow-black/80 select-none">

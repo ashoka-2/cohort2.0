@@ -8,12 +8,12 @@ export const TrendingSection = ({ trending, movieStatus, renderContent }) => (
             </h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
-            {renderContent(trending.slice(1, 11), true, movieStatus)}
+            {renderContent(trending.slice(1, 11), trending.length === 0)}
         </div>
     </section>
 );
 
-export const PopularMoviesSection = ({ popularMovies, movieStatus, renderContent }) => (
+export const PopularMoviesSection = ({ popularMovies, renderContent }) => (
     <section className="gsap-section glass-panel p-6 pb-8">
         <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold border-l-4 border-primary pl-4 tracking-wider flex items-center gap-2">
@@ -21,12 +21,12 @@ export const PopularMoviesSection = ({ popularMovies, movieStatus, renderContent
             </h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
-            {renderContent(popularMovies, movieStatus === 'idle' || popularMovies.length === 0, movieStatus)}
+            {renderContent(popularMovies, popularMovies.length === 0)}
         </div>
     </section>
 );
 
-export const PopularTvSection = ({ popularTvShows, movieStatus, renderContent, loadingMore }) => (
+export const PopularTvSection = ({ popularTvShows, renderContent, loadingMore }) => (
     <section className="gsap-section glass-panel p-6 pb-8">
         <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold border-l-4 border-primary pl-4 tracking-wider flex items-center gap-2">
@@ -34,7 +34,7 @@ export const PopularTvSection = ({ popularTvShows, movieStatus, renderContent, l
             </h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
-            {renderContent(popularTvShows, movieStatus === 'idle' || popularTvShows.length === 0, movieStatus)}
+            {renderContent(popularTvShows, popularTvShows.length === 0)}
         </div>
         {loadingMore && (
             <div className="flex justify-center mt-8 pb-8">
@@ -44,7 +44,7 @@ export const PopularTvSection = ({ popularTvShows, movieStatus, renderContent, l
     </section>
 );
 
-export const GenreResultsSection = ({ selectedGenreId, genres, moviesByGenre, movieStatus, renderContent, loadingMore }) => (
+export const GenreResultsSection = ({ selectedGenreId, genres, moviesByGenre, renderContent, loadingMore }) => (
     <section className="gsap-section glass-panel p-6">
         <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold border-l-4 border-primary pl-4 tracking-wider flex items-center gap-2">
@@ -52,7 +52,7 @@ export const GenreResultsSection = ({ selectedGenreId, genres, moviesByGenre, mo
             </h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
-            {renderContent(moviesByGenre[selectedGenreId]?.results || [], !moviesByGenre[selectedGenreId], movieStatus)}
+            {renderContent(moviesByGenre[selectedGenreId]?.results || [], !moviesByGenre[selectedGenreId])}
         </div>
         {loadingMore && (
             <div className="flex justify-center mt-8 pb-8">

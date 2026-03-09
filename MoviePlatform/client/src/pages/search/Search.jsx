@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { searchMovies, clearSearch, setSearchState, addRecentQuery } from '../../features/search/searchSlice';
 import { tmdbService } from '../../services/api/tmdb.service';
 import MovieCard from '../../components/ui/MovieCard';
-import Skeleton from '../../components/ui/Skeleton';
+import Skeleton, { SearchSkeleton } from '../../components/ui/Skeleton';
 
 // Internal Components
 import SearchBar from './SearchBar';
@@ -88,7 +88,7 @@ const Search = () => {
             />
 
             {(status === 'loading' || actorLoading) && (
-                <Skeleton count={10} />
+                <SearchSkeleton count={10} />
             )}
 
             {searchType === 'movies' && status === 'succeeded' && results.length === 0 && query && (
