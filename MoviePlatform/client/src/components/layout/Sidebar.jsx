@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { logoutUserThunk } from '../../features/auth/authSlice';
 import { toggleTheme } from '../../features/theme/themeSlice';
 
@@ -28,6 +28,8 @@ const Sidebar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isNavVisible, setIsNavVisible] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
 
     const visibleUser = NAV_USER.filter(l => {
         if (l.requireAdmin) return user?.isAdmin;
@@ -50,6 +52,26 @@ const Sidebar = () => {
     ];
 
     const isActive = (path) => location.pathname === path;
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+
+            if (currentScrollY > lastScrollY && currentScrollY > 80) {
+                // Scrolling down, hide the nav
+                setIsNavVisible(false);
+                if (isMobileMenuOpen) setIsMobileMenuOpen(false);
+            } else {
+                // Scrolling up, show the nav
+                setIsNavVisible(true);
+            }
+
+            setLastScrollY(currentScrollY);
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [lastScrollY, isMobileMenuOpen]);
 
     const LinkItem = ({ link, iconOnly = false }) => (
         <Link
@@ -181,7 +203,8 @@ const Sidebar = () => {
 
             {/* ─── Mobile Top Header ───────────────────────────────── */}
             <header
-                className="md:hidden fixed top-4 mx-5 h-16 z-50 rounded-[1.5rem] mobile-header-glass transition-all duration-500 relative"
+                className={`md:hidden fixed top-4 left-0 right-0 mx-5 h-16 z-50 rounded-[1.5rem] mobile-header-glass transition-all duration-300 ${isNavVisible ? 'translate-y-0 opacity-100' : '-translate-y-[150%] opacity-0'
+                    }`}
             >
                 <div className="w-full h-full flex items-center justify-between px-6">
                     <Link to="/" className="flex items-center gap-3">
